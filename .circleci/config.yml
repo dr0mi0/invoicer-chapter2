@@ -34,8 +34,8 @@ jobs:
    #       github.com/${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}
                     
    - run:
-     name: Build application container
-     command: |
+      name: Build application container
+      command: |
           go install --ldflags '-extldflags "-static"' \
           github.com/${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME};
           [ ! -e bin ] && mkdir bin;
