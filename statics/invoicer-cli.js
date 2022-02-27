@@ -31,10 +31,10 @@ $(document).ready(function() {
 function getInvoice(invoiceid, CSRFToken) {
     $('.desc-invoice').html("<p>Showing invoice ID " + invoiceid + "</p>");
     $.ajax({
-        url: "/invoice/delete/" + invoiceid,
+        url: "/invoice/" + invoiceid,
         beforeSend: function (request)
         {
-	    request.setRequestHeader("X-CSRF-Token", $("#CSRFToken").val());	
+	    request.setRequestHeader("X-CSRF-Token", CSRFToken);	
         },
         error: function (xhr, ajaxOptions, thrownError) {
             if(xhr.status==404) {
