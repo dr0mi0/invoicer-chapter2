@@ -278,6 +278,25 @@ func checkCSRFToken(token string) bool {
 	return hmac.Equal(messageMAC, expectedMAC)
 }
 
+
+var oauthCfg = &oauth2.Config{
+	ClientID:     "606479880714-v36tg6qtn9alsinbvfb0qtmvjdkunq4c.apps.googleusercontent.com",
+	ClientSecret: "ySBC6T-F31ez3qsA3lnNRvtr",
+	RedirectURL:  "http://localhost:8080/oauth2callback",
+	Scopes:       []string{"https://www.googleapis.com/auth/userinfo.profile"},
+	Endpoint: oauth2.Endpoint{
+		AuthURL:  "https://accounts.google.com/o/oauth2/auth",
+		TokenURL: "https://accounts.google.com/o/oauth2/token",
+	},
+}
+
+func (iv *invoicer) getAuthenticate(w http.ResponseWriter, r *http.Request) {
+	//Get the Google URL which shows the Authentication page to the user
+	url := oauthCfg.AuthCodeURL(makeCSRFToken())
+	//redirect user to that page
+	http.Redirect(w, r, url, http.StatusTemporaryRedirect)
+}
+
 // Function that handles the callback from the IDP
 func (iv *invoicer) getOAuth2Callback(w http.ResponseWriter, r *http.Request) {
 	if !checkCSRFToken(r.FormValue("state")) {
