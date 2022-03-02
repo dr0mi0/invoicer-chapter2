@@ -225,7 +225,9 @@ func (iv *invoicer) deleteInvoice(w http.ResponseWriter, r *http.Request) {
 }
 
 func (iv *invoicer) getIndex(w http.ResponseWriter, r *http.Request) {
-	w.Header().Add("Content-Security-Policy", "default-src 'self';")
+	'strict-dynamic'
+	w.Header().Add("Content-Security-Policy", "default-src 'strict-dynamic';")
+	//w.Header().Add("Content-Security-Policy", "default-src 'self';")
 	log.Println("serving index page")
 	w.Write([]byte(`
 <!DOCTYPE html>
