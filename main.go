@@ -141,6 +141,11 @@ func (iv *invoicer) getInvoice(w http.ResponseWriter, r *http.Request) {
 }
 
 func (iv *invoicer) postInvoice(w http.ResponseWriter, r *http.Request) {
+	if !checkCSRFToken(r.Header.Get("X-CSRF-Token")) {
+        	w.WriteHeader(http.StatusNotAcceptable)
+        	w.Write([]byte("Invalid CSRF Token"))
+        	return
+    	}
 	log.Println("posting new invoice")
 	body, err := ioutil.ReadAll(r.Body)
 	if err != nil {
@@ -169,6 +174,11 @@ func (iv *invoicer) postInvoice(w http.ResponseWriter, r *http.Request) {
 
 func (iv *invoicer) putInvoice(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
+	if !checkCSRFToken(r.Header.Get("X-CSRF-Token")) {
+        	w.WriteHeader(http.StatusNotAcceptable)
+        	w.Write([]byte("Invalid CSRF Token"))
+        	return
+    	}
 	log.Println("updating invoice", vars["id"])
 	var i1 Invoice
 	iv.db.First(&i1, vars["id"])
@@ -215,6 +225,11 @@ func (iv *invoicer) deleteInvoice(w http.ResponseWriter, r *http.Request) {
 }
 
 func (iv *invoicer) getIndex(w http.ResponseWriter, r *http.Request) {
+	if !checkCSRFToken(r.Header.Get("X-CSRF-Token")) {
+        	w.WriteHeader(http.StatusNotAcceptable)
+        	w.Write([]byte("Invalid CSRF Token"))
+        	return
+    	}
 	w.Header().Add("Content-Security-Policy", "default-src 'self';")
 	log.Println("serving index page")
 	w.Write([]byte(`
@@ -246,11 +261,21 @@ func (iv *invoicer) getIndex(w http.ResponseWriter, r *http.Request) {
 }
 
 func getHeartbeat(w http.ResponseWriter, r *http.Request) {
+	if !checkCSRFToken(r.Header.Get("X-CSRF-Token")) {
+        	w.WriteHeader(http.StatusNotAcceptable)
+        	w.Write([]byte("Invalid CSRF Token"))
+        	return
+    	}
 	w.Write([]byte("I am alive"))
 }
 
 // handleVersion returns the current version of the API
 func getVersion(w http.ResponseWriter, r *http.Request) {
+	if !checkCSRFToken(r.Header.Get("X-CSRF-Token")) {
+        	w.WriteHeader(http.StatusNotAcceptable)
+        	w.Write([]byte("Invalid CSRF Token"))
+        	return
+    	}
 	w.Write([]byte(fmt.Sprintf(`{
 "source": "https://github.com/Securing-DevOps/invoicer",
 "version": "%s",
