@@ -238,7 +238,7 @@ func (iv *invoicer) getIndex(w http.ResponseWriter, r *http.Request) {
 <html>
     <head>
         <title>Invoicer Web</title>
-        <script src="statics/jquery-1.12.4.min.js" content="text/html; charset=UTF-8; X-Content-Type-Options=nosniff"></script>
+        <script src="statics/jquery-1.12.4.min.js"></script>
         <script src="statics/invoicer-cli.js"></script>
         <link href="statics/style.css" rel="stylesheet">
     </head>
