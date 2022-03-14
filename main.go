@@ -225,12 +225,12 @@ func (iv *invoicer) deleteInvoice(w http.ResponseWriter, r *http.Request) {
 }
 
 func (iv *invoicer) getIndex(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Security-Policy",
+	w.Header().Add("Content-Security-Policy",
 		       "default-src 'self'; child-src 'self;")
-    	w.Header().Set("X-Frame-Options", "SAMEORIGIN")
-	w.Header().Set("X-Content-Type-Options","nosniff")
-	w.Header().Set("X-XSS-Protection","0")
-	w.Header().Set("Content-Type",
+    	w.Header().Add("X-Frame-Options", "SAMEORIGIN")
+	w.Header().Add("X-Content-Type-Options","nosniff")
+	w.Header().Add("X-XSS-Protection","0")
+	w.Header().Add("Content-Type",
 		       "text/html; charset=utf-8")		       
 	log.Println("serving index page")
 	w.Write([]byte(`
@@ -238,7 +238,7 @@ func (iv *invoicer) getIndex(w http.ResponseWriter, r *http.Request) {
 <html>
     <head>
         <title>Invoicer Web</title>
-        <script src="statics/jquery-1.12.4.min.js"></script>
+        <script src="statics/jquery-1.12.4.min.js" content="text/html; charset=UTF-8; X-Content-Type-Options=nosniff"></script>
         <script src="statics/invoicer-cli.js"></script>
         <link href="statics/style.css" rel="stylesheet">
     </head>
