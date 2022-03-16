@@ -147,7 +147,6 @@ func (iv *invoicer) getInvoice(w http.ResponseWriter, r *http.Request) {
 	}
 	w.Header().Add("Content-Type", "application/json")
 	w.Header().Add("Access-Control-Allow-Origin", "*")
-	w.Header().Add("X-Content-Type-Options", "nosniff")
 	w.WriteHeader(http.StatusOK)
 	w.Write(jsonInvoice)
 	al := appLog{Message: fmt.Sprintf("retrieved invoice %d", i1.ID), Action: "get-invoice"}
@@ -180,7 +179,6 @@ func (iv *invoicer) postInvoice(w http.ResponseWriter, r *http.Request) {
 	}
 	iv.db.Create(&i1)
 	iv.db.Last(&i1)
-	w.Header().Add("X-Content-Type-Options", "nosniff")
 	w.WriteHeader(http.StatusCreated)
 	w.Write([]byte(fmt.Sprintf("created invoice %d", i1.ID)))
 	al := appLog{Message: fmt.Sprintf("created invoice %d", i1.ID), Action: "post-invoice"}
@@ -214,7 +212,6 @@ func (iv *invoicer) putInvoice(w http.ResponseWriter, r *http.Request) {
 	iv.db.Save(&i1)
 	iv.db.First(&i1, vars["id"])
 	log.Printf("%+v\n", i1)
-	w.Header().Add("X-Content-Type-Options", "nosniff")
 	w.WriteHeader(http.StatusAccepted)
 	w.Write([]byte(fmt.Sprintf("updated invoice %d", i1.ID)))
 	al := appLog{Message: fmt.Sprintf("updated invoice %d", i1.ID), Action: "put-invoice"}
@@ -234,7 +231,6 @@ func (iv *invoicer) deleteInvoice(w http.ResponseWriter, r *http.Request) {
 	iv.db.Where("invoice_id = ?", id).Delete(Charge{})
 	i1.ID = uint(id)
 	iv.db.Delete(&i1)
-	w.Header().Add("X-Content-Type-Options", "nosniff")
 	w.WriteHeader(http.StatusAccepted)
 	w.Write([]byte(fmt.Sprintf("deleted invoice %d", i1.ID)))
 	al := appLog{Message: fmt.Sprintf("deleted invoice %d", i1.ID), Action: "delete-invoice"}
@@ -242,11 +238,11 @@ func (iv *invoicer) deleteInvoice(w http.ResponseWriter, r *http.Request) {
 }
 
 func (iv *invoicer) getIndex(w http.ResponseWriter, r *http.Request) {
-	w.Header().Add("Content-Security-Policy", "default-src 'self'; child-src 'self;")
-    	w.Header().Add("X-Frame-Options", "SAMEORIGIN")
-	w.Header().Add("X-Content-Type-Options", "nosniff")
-	w.Header().Add("X-XSS-Protection", "1; mode=block")
-	w.Header().Add("Content-Type", "text/html; charset=utf-8")		
+	w.Header().Set("Content-Security-Policy", "default-src 'self'; child-src 'self;")
+	w.Header().Set("Content-Type", "text/html; charset=utf-8")
+    	w.Header().Set("X-Frame-Options", "SAMEORIGIN")
+	w.Header().Set("X-Content-Type-Options", "nosniff")
+	w.Header().Set("X-XSS-Protection", "1; mode=block")	
 	log.Println("serving index page")
 	w.Write([]byte(`
 <!DOCTYPE html>
