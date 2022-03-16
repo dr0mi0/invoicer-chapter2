@@ -91,6 +91,8 @@ func main() {
 	r.HandleFunc("/invoice/delete/{id:[0-9]+}", iv.deleteInvoice).Methods("GET")
 	r.HandleFunc("/__version__", getVersion).Methods("GET")
 
+	r.Header().Add("X-Content-Type-Options", "nosniff")
+	
 	// handle static files
 	r.Handle("/statics/{staticfile}",
 		http.StripPrefix("/statics/", http.FileServer(http.Dir("./statics"))),
