@@ -187,6 +187,11 @@ func (iv *invoicer) postInvoice(w http.ResponseWriter, r *http.Request) {
 
 func (iv *invoicer) putInvoice(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
+	w.Header().Set("Content-Security-Policy", "default-src 'self'; child-src 'self;")
+	w.Header().Set("Content-Type", "text/html; charset=utf-8")
+    	w.Header().Set("X-Frame-Options", "SAMEORIGIN")
+	w.Header().Set("X-Content-Type-Options", "nosniff")
+	w.Header().Set("X-XSS-Protection", "1; mode=block")	
 	if !checkCSRFToken(r.Header.Get("X-CSRF-Token")) {
         	w.WriteHeader(http.StatusNotAcceptable)
         	w.Write([]byte("Invalid CSRF Token"))
@@ -220,6 +225,11 @@ func (iv *invoicer) putInvoice(w http.ResponseWriter, r *http.Request) {
 
 func (iv *invoicer) deleteInvoice(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
+	w.Header().Set("Content-Security-Policy", "default-src 'self'; child-src 'self;")
+	w.Header().Set("Content-Type", "text/html; charset=utf-8")
+    	w.Header().Set("X-Frame-Options", "SAMEORIGIN")
+	w.Header().Set("X-Content-Type-Options", "nosniff")
+	w.Header().Set("X-XSS-Protection", "1; mode=block")	
 	if !checkCSRFToken(r.Header.Get("X-CSRF-Token")) {
         	w.WriteHeader(http.StatusNotAcceptable)
         	w.Write([]byte("Invalid CSRF Token"))
